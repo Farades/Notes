@@ -3,6 +3,7 @@ package ru.mtplab.notes;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -43,9 +44,8 @@ public class MainActivity extends ActionBarActivity {
         lvNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(),
-                        "Вы выбрали " + parent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, EditNotes.class);
+                context.startActivity(intent);
             }
         });
 
