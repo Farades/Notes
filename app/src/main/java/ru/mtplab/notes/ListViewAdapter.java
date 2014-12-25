@@ -37,6 +37,20 @@ public class ListViewAdapter extends BaseAdapter {
         Log.e("Debug", "Add note [" + note + "] to note list");
     }
 
+    public void remove(Note note) {
+        if (dataList != null) {
+            dataList.remove(note);
+            this.notifyDataSetChanged();
+        }
+    }
+
+    public void remove(int position) {
+        if (dataList != null) {
+            dataList.remove(position);
+            this.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public int getCount() {
         return dataList.size();

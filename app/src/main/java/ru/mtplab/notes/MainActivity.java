@@ -41,38 +41,35 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-//        lvNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                final String selectedItem = parent.getItemAtPosition(position).toString();
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                builder.setMessage("Вы хотите удалить " + selectedItem + "?");
-//                builder.setCancelable(false);
-//                builder.setPositiveButton("Да",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                               // adapter.remove(selectedItem);
-//                                adapter.notifyDataSetChanged();
-//
-//                                Toast.makeText(getApplicationContext(),
-//                                        selectedItem + " удален."   ,
-//                                        Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                builder.setNegativeButton("Нет",
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//                builder.show();
-//                return true;
-//            }
-//        });
+        lvNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage("Вы хотите удалить заметку №" + (position + 1) + "?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Да",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                adapter.remove(position);
+
+                                Toast.makeText(getApplicationContext(),
+                                        "Заметка удалена."   ,
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                builder.setNegativeButton("Нет",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                builder.show();
+                return true;
+            }
+        });
     }
 
 
@@ -91,10 +88,8 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.menu_add_item) {
-//            adapter.add("Тестируем добавление");
             Intent intent = new Intent(context, EditNotes.class);
             startActivityForResult(intent, 1);
-//            adapter.notifyDataSetChanged();
             return true;
         }
 
