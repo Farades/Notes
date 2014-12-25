@@ -58,9 +58,11 @@ public class ListViewAdapter extends BaseAdapter {
         View itemView = inflater.inflate(R.layout.list_item, null, false);
         TextView itemNumber = (TextView) itemView.findViewById(R.id.iNumber);
         TextView itemTitle = (TextView) itemView.findViewById(R.id.iTitle);
+        TextView itemDate = (TextView) itemView.findViewById(R.id.iDate);
 
         itemNumber.setText(String.valueOf(arg0 + 1));
         itemTitle.setText(dataList.get(arg0).toString());
+        itemDate.setText(dataList.get(arg0).getDate());
 
         return itemView;
     }
