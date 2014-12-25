@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by tess on 24.12.2014.
+ *  ListViewAdaper - кастомный адаптер для связи модели и ListView
  */
 public class ListViewAdapter extends BaseAdapter {
 
@@ -33,17 +33,6 @@ public class ListViewAdapter extends BaseAdapter {
         dataList.add(note);
         this.notifyDataSetChanged();
         Log.e("Debug", "Add note [" + note + "] to note list");
-    }
-
-    public void remove(Note note) {
-        if (dataList != null) {
-            dataList.remove(note);
-            this.notifyDataSetChanged();
-        }
-    }
-
-    public Object getItems() {
-        return dataList;
     }
 
     public void remove(int position) {
