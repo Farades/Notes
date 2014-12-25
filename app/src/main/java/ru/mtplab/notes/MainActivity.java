@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,29 +17,20 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 
 public class MainActivity extends ActionBarActivity {
 
     private ListView lvNotes;
-    private ArrayAdapter<String> adapter;
+    ListViewAdapter adapter;
     private final Context context = this;
-
-    final String[] catnames = new String[] { "Рыжик", "Барсик", "Мурзик",
-            "Мурка", "Васька", "Томасина", "Бобик", "Кристина", "Пушок",
-            "Дымка", "Кузя", "Китти", "Барбос", "Масяня", "Симба" };
-
-    private ArrayList<String> list = new ArrayList<String>(Arrays.asList(catnames));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupAdapter();
         lvNotes = (ListView) findViewById(R.id.lvNotes);
-        adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, list);
         lvNotes.setAdapter(adapter);
 
         lvNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -49,38 +41,38 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        lvNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final String selectedItem = parent.getItemAtPosition(position).toString();
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Вы хотите удалить " + selectedItem + "?");
-                builder.setCancelable(false);
-                builder.setPositiveButton("Да",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                adapter.remove(selectedItem);
-                                adapter.notifyDataSetChanged();
-
-                                Toast.makeText(getApplicationContext(),
-                                        selectedItem + " удален."   ,
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                builder.setNegativeButton("Нет",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.show();
-                return true;
-            }
-        });
+//        lvNotes.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                final String selectedItem = parent.getItemAtPosition(position).toString();
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setMessage("Вы хотите удалить " + selectedItem + "?");
+//                builder.setCancelable(false);
+//                builder.setPositiveButton("Да",
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                               // adapter.remove(selectedItem);
+//                                adapter.notifyDataSetChanged();
+//
+//                                Toast.makeText(getApplicationContext(),
+//                                        selectedItem + " удален."   ,
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                builder.setNegativeButton("Нет",
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//                builder.show();
+//                return true;
+//            }
+//        });
     }
 
 
@@ -99,8 +91,10 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         if (id == R.id.menu_add_item) {
-            adapter.add("Тестируем добавление");
-            adapter.notifyDataSetChanged();
+//            adapter.add("Тестируем добавление");
+            Intent intent = new Intent(context, EditNotes.class);
+            startActivityForResult(intent, 1);
+//            adapter.notifyDataSetChanged();
             return true;
         }
 
@@ -131,5 +125,22 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) return;
+        String noteTitle = data.getStringExtra("noteTitle");
+        adapter.add(new Note(noteTitle));
+    }
+
+    public void setupAdapter() {
+        final String[] testNotes = new String[] { "Изучать Android", "Не проспать новый год", "Копейка! Ты бережешь рубль или нет?",
+                "Купить подарки на новый год", "Тут тестовая заметка", "А тут рыба рыбная" };
+        ArrayList<Note> dataList = new ArrayList<Note>();
+        for (String noteTitle : testNotes) {
+            dataList.add( new Note(noteTitle) );
+        }
+        adapter = new ListViewAdapter(context, dataList);
     }
 }

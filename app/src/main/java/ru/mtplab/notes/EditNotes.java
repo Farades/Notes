@@ -1,17 +1,37 @@
 package ru.mtplab.notes;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 public class EditNotes extends ActionBarActivity {
+
+    private EditText editNoteTitle;
+    private Button noteSaveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_notes);
+
+        editNoteTitle = (EditText) findViewById(R.id.editNoteTitle);
+        noteSaveButton = (Button) findViewById(R.id.noteSaveButton);
+
+        noteSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("noteTitle", editNoteTitle.getText().toString());
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 
 
@@ -29,10 +49,10 @@ public class EditNotes extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

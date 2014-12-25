@@ -7,17 +7,21 @@ import java.util.Date;
  */
 public class Note {
 
-    private String title;
     private String data;
     private Date date;
 
     public Note() {
-        this.title = "";
         this.data = "";
         this.date = new Date();
     }
 
-    public Note(String title, String data) {
+    public Note(String data) {
+        this.data = data;
+        this.date = new Date();
+    }
 
+    @Override
+    public String toString() {
+        return data;
     }
 }
