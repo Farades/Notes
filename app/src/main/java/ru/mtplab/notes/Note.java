@@ -15,7 +15,14 @@ public class Note {
 
     public Note(String data) {
         this.data = data;
-        SimpleDateFormat dt = new SimpleDateFormat("dd.MM.yy hh:mm");
+        SimpleDateFormat dt = new SimpleDateFormat("dd.MM.yy HH:mm");
+        Date date = new Date();
+        this.date = dt.format(date);
+    }
+
+    public void update(String data) {
+        this.data = data;
+        SimpleDateFormat dt = new SimpleDateFormat("dd.MM.yy HH:mm");
         Date date = new Date();
         this.date = dt.format(date);
     }

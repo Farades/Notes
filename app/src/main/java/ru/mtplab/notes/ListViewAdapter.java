@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 /**
@@ -44,11 +42,20 @@ public class ListViewAdapter extends BaseAdapter {
         }
     }
 
+    public Object getItems() {
+        return dataList;
+    }
+
     public void remove(int position) {
         if (dataList != null) {
             dataList.remove(position);
             this.notifyDataSetChanged();
         }
+    }
+
+    public void update(int index, String data) {
+        dataList.get(index).update(data);
+        this.notifyDataSetChanged();
     }
 
     @Override

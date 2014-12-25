@@ -24,6 +24,9 @@ public class MainActivity extends ActionBarActivity {
     ListViewAdapter adapter;
     private final Context context = this;
 
+    final int REQUEST_CODE_NEW  = 1;
+    final int REQUEST_CODE_EDIT = 2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(context, EditNotes.class);
-                context.startActivity(intent);
+                intent.putExtra("noteTitle", adapter.getItem(position).toString());
+                intent.putExtra("noteId", position);
+                startActivityForResult(intent, REQUEST_CODE_EDIT);
             }
         });
 
@@ -89,7 +94,7 @@ public class MainActivity extends ActionBarActivity {
 
         if (id == R.id.menu_add_item) {
             Intent intent = new Intent(context, EditNotes.class);
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, REQUEST_CODE_NEW);
             return true;
         }
 
@@ -124,9 +129,25 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) return;
-        String noteTitle = data.getStringExtra("noteTitle");
-        adapter.add(new Note(noteTitle));
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_CODE_NEW:
+                    Log.e("Debug", "Hundler Activity Result for new request code");
+                    if (data == null) return;
+                    String noteTitle = data.getStringExtra("noteTitle");
+                    adapter.add(new Note(noteTitle));
+                break;
+                case REQUEST_CODE_EDIT:
+                    Log.e("Debug", "Hundler Activity Result for edit request code");
+                    if (data == null) return;
+                    noteTitle = data.getStringExtra("noteTitle");
+                    int noteId = data.getIntExtra("noteId", -1);
+                    if (noteId != -1) {
+                        adapter.update(noteId, noteTitle);
+                    }
+                break;
+            }
+        }
     }
 
     public void setupAdapter() {

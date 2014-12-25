@@ -3,6 +3,7 @@ package ru.mtplab.notes;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,8 @@ public class EditNotes extends ActionBarActivity {
 
     private EditText editNoteTitle;
     private Button noteSaveButton;
+    private Intent intent;
+    private int noteId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,12 @@ public class EditNotes extends ActionBarActivity {
         setContentView(R.layout.activity_edit_notes);
 
         editNoteTitle = (EditText) findViewById(R.id.editNoteTitle);
+        String nodeTitle;
+        intent = this.getIntent();
+        noteId = intent.getIntExtra("noteId", -1);
+        if ( ( nodeTitle = intent.getStringExtra("noteTitle")) != null ) {
+            editNoteTitle.setText(nodeTitle);
+        }
         noteSaveButton = (Button) findViewById(R.id.noteSaveButton);
 
         noteSaveButton.setOnClickListener(new View.OnClickListener() {
@@ -28,6 +37,9 @@ public class EditNotes extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.putExtra("noteTitle", editNoteTitle.getText().toString());
+                if (noteId != -1) {
+                    intent.putExtra("noteId", noteId);
+                }
                 setResult(RESULT_OK, intent);
                 finish();
             }
